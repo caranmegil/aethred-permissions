@@ -15,7 +15,6 @@ router.get('/:service/:user', function(req, res, next) {
   var ref = db.ref(`permissions/${req.params.service}/${req.params.user}`)
   ref.once('value', (snapshot) => {
     var userPermissions = snapshot.val()
-    console.log(userPermissions)
     var permissions = Object.keys(userPermissions).filter( (k) => {return userPermissions[k]} )
     res.json({results: permissions})
   })
