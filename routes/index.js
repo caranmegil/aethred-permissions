@@ -9,19 +9,19 @@ admin.initializeApp({
   databaseURL: "https://aethreddb.firebaseio.com"
 });
 
+var db = admin.database()
 /* GET home page. */
 router.get('/:service/:user', function(req, res, next) {
-  var db = admin.database()
-  var ref = db.ref('permissions')
-  ref.child(req.params.service).child(req.params.user).on('value', (snapshot) => {
+  var ref = db.ref(`permissions/${req.params.service}/${req.params.user}`)
+  ref.once('value', (snapshot) => {
     var userPermissions = snapshot.val()
-    var permissions = Object.keys(userPermissions).filter( (k, v) => {return !v} )
+    console.log(userPermissions)
+    var permissions = Object.keys(userPermissions).filter( (k) => {return userPermissions[k]} )
     res.json({results: permissions})
   })
 });
 
 router.post('/:service/:user', function(req, res, next) {
-  var db = admin.database()
   var ref = db.ref(`permissions/${req.params.service}/${req.params.user}`)
 
   var userPermissions = {}
@@ -34,7 +34,6 @@ router.post('/:service/:user', function(req, res, next) {
 });
 
 router.delete('/:service/:user', function(req, res, next) {
-  var db = admin.database()
   var ref = db.ref(`permissions/${req.params.service}/${req.params.user}`)
 
   var userPermissions = {}
