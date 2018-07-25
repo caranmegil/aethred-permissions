@@ -2,14 +2,26 @@ var express = require('express');
 var router = express.Router();
 var admin = require("firebase-admin");
 
-var serviceAccount = require("../config/serviceAccountKey.json");
+var consul = require('consul')(
+  {
+    host: process.env.CONSUL_HOST
+  }
+)
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://aethreddb.firebaseio.com"
-});
+var serviceAccount = {};
+var db = undefined;
 
-var db = admin.database()
+consul.kv.get('aethred/permissions/serviceAccountKey', (err, res) => {
+  if(err) throw err;
+  serviceAccount = JSON.parse(res.Value);
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://aethreddb.firebaseio.com"
+  });
+  db = admin.database();
+})
+
+
 /* GET home page. */
 router.get('/:service/:user', function(req, res, next) {
   var ref = db.ref(`permissions/${req.params.service}/${req.params.user}`)
