@@ -11,7 +11,7 @@ var consul = require('consul')(
 var serviceAccount = {};
 var db = undefined;
 
-consul.kv.get('aethred/permissions/serviceAccountKey', (err, res) => {
+consul.kv.get('aethred/db/serviceAccountKey', (err, res) => {
   if(err) throw err;
   serviceAccount = JSON.parse(res.Value);
   admin.initializeApp({
