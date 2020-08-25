@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "name": "aethred-perm",
+      "script": "/home/pi/aethred-permissions/bin/www",
+      "instances": 1,
+      "exec_mode": "cluster",
+      "env": {
+        "CONSUL_HOST": "draxpi",
+        "PORT": "3000",
+      }
+    }
+  ]
+}
