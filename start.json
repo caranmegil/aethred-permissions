@@ -8,6 +8,7 @@
       "env": {
         "CONSUL_HOST": "draxpi",
         "PORT": "3000",
+        "PERM_FILE": "/home/pi/aethred-permissions/permissions.json"
       }
     }
   ]
