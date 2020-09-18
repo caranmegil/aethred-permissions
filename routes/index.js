@@ -6,12 +6,13 @@ var users = {}
 
 setInterval( () => {
   let rawdata = fs.readFileSync(process.env.PERM_FILE)
-  users = JSON.parse(rawdata)[req.params.service] || {}
+  userPermissions = JSON.parse(rawdata) || {}
 },10000)
 
 /* GET home page. */
 router.get('/:service/:user', function(req, res, next) {
   try {
+    users = userPermissions[req.params.service] || {}
     let permissions = users[req.params.user] || [] 
     res.json({results: permissions})
   } catch {
